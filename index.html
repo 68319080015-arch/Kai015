@@ -1,0 +1,722 @@
+<!DOCTYPE html>
+<html lang="th">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Portfolio</title>
+    <!-- Bootstrap CSS CDN -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Font Awesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --primary-color: #6366f1;
+            --primary-light: #8b5cf6;
+            --primary-dark: #4f46e5;
+            --secondary-color: #ec4899;
+            --accent-color: #06b6d4;
+            --text-dark: #1e293b;
+            --text-light: #64748b;
+            --bg-light: #f8fafc;
+            --white: #ffffff;
+        }
+
+        * {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            line-height: 1.6;
+            color: var(--text-dark);
+        }
+
+        .carousel-item {
+            height: 600px;
+        }
+
+        .carousel-item img {
+            object-fit: cover;
+            height: 100%;
+        }
+
+        .section-padding {
+            padding: 80px 0;
+        }
+
+        .card-img-top {
+            height: 250px;
+            object-fit: cover;
+        }
+
+        /* Navbar Styles */
+        .navbar {
+            background: var(--white) !important;
+            backdrop-filter: blur(10px);
+            box-shadow: 0 2px 20px rgba(99, 102, 241, 0.1);
+            transition: all 0.3s ease;
+        }
+
+        .navbar-brand {
+            font-size: 1.8rem !important;
+            font-weight: 700;
+            color: var(--primary-color) !important;
+        }
+
+        .nav-link {
+            font-weight: 500;
+            color: var(--text-dark) !important;
+            transition: all 0.3s ease;
+            position: relative;
+        }
+
+        .nav-link:hover {
+            color: var(--primary-color) !important;
+        }
+
+        .nav-link::after {
+            content: '';
+            position: absolute;
+            width: 0;
+            height: 2px;
+            bottom: 0;
+            left: 50%;
+            background: var(--primary-color);
+            transition: all 0.3s ease;
+            transform: translateX(-50%);
+        }
+
+        .nav-link:hover::after {
+            width: 100%;
+        }
+
+        /* Profile Upload Section */
+        .profile-upload {
+            text-align: center;
+            margin: 30px 0;
+        }
+
+        .profile-image-container {
+            position: relative;
+            display: inline-block;
+            margin-bottom: 20px;
+        }
+
+        .profile-image {
+            width: 150px;
+            height: 150px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 4px solid var(--primary-color);
+            box-shadow: 0 8px 30px rgba(99, 102, 241, 0.3);
+            transition: all 0.3s ease;
+        }
+
+        .profile-image:hover {
+            transform: scale(1.05);
+        }
+
+        .upload-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(99, 102, 241, 0.8);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            opacity: 0;
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+
+        .upload-overlay:hover {
+            opacity: 1;
+        }
+
+        .upload-overlay i {
+            color: white;
+            font-size: 2rem;
+        }
+
+        #profileUpload {
+            display: none;
+        }
+
+        /* Button Styles */
+        .btn-primary {
+            background: linear-gradient(135deg, var(--primary-color), var(--primary-light));
+            border: none;
+            padding: 12px 30px;
+            font-weight: 500;
+            border-radius: 50px;
+            box-shadow: 0 4px 15px rgba(99, 102, 241, 0.3);
+            transition: all 0.3s ease;
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(99, 102, 241, 0.4);
+            background: linear-gradient(135deg, var(--primary-dark), var(--primary-color));
+        }
+
+        .btn-outline-primary {
+            color: var(--primary-color);
+            border: 2px solid var(--primary-color);
+            background: transparent;
+            padding: 10px 25px;
+            font-weight: 500;
+            border-radius: 50px;
+            transition: all 0.3s ease;
+        }
+
+        .btn-outline-primary:hover {
+            background: var(--primary-color);
+            border-color: var(--primary-color);
+            transform: translateY(-2px);
+        }
+
+        /* Text Styles */
+        .text-primary {
+            color: var(--primary-color) !important;
+        }
+
+        .text-gradient {
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        /* Card Styles */
+        .card {
+            border: none;
+            border-radius: 20px;
+            transition: all 0.3s ease;
+            background: var(--white);
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+            overflow: hidden;
+        }
+
+        .card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.15);
+        }
+
+        .card-img-top {
+            transition: all 0.3s ease;
+        }
+
+        .card:hover .card-img-top {
+            transform: scale(1.05);
+        }
+
+        .card-title {
+            color: var(--text-dark);
+            font-weight: 600;
+        }
+
+        .card-text {
+            color: var(--text-light);
+        }
+
+        /* Section Backgrounds */
+        .bg-primary-light {
+            background: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%);
+        }
+
+        /* Carousel Styles */
+        .carousel-caption {
+            background: linear-gradient(135deg, rgba(99, 102, 241, 0.9), rgba(139, 92, 246, 0.9));
+            border-radius: 15px;
+            padding: 30px;
+            backdrop-filter: blur(10px);
+        }
+
+        .carousel-caption h5 {
+            color: white !important;
+            text-shadow: none;
+        }
+
+        .carousel-caption p {
+            color: white !important;
+        }
+
+        /* Form Styles */
+        .form-control {
+            border: 2px solid #e2e8f0;
+            border-radius: 10px;
+            padding: 12px 16px;
+            transition: all 0.3s ease;
+            background: var(--white);
+        }
+
+        .form-control:focus {
+            border-color: var(--primary-color);
+            box-shadow: 0 0 0 0.25rem rgba(99, 102, 241, 0.1);
+        }
+
+        .form-label {
+            color: var(--text-dark);
+            font-weight: 500;
+            margin-bottom: 8px;
+        }
+
+        /* Footer Styles */
+        footer {
+            background: linear-gradient(135deg, var(--text-dark), var(--primary-dark)) !important;
+            color: white;
+        }
+
+        /* Animation Classes */
+        .fade-in {
+            animation: fadeIn 0.6s ease-in;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* Responsive Adjustments */
+        @media (max-width: 768px) {
+            .profile-image {
+                width: 120px;
+                height: 120px;
+            }
+
+            .section-padding {
+                padding: 60px 0;
+            }
+        }
+    </style>
+</head>
+
+<body data-bs-spy="scroll" data-bs-target="#navbar" data-bs-offset="70">
+
+    <!-- Header - Navbar -->
+    <header>
+        <nav id="navbar" class="navbar navbar-expand-lg navbar-light sticky-top">
+            <div class="container">
+                <a class="navbar-brand d-flex align-items-center" href="#">
+                    <img src="img/IMG20250709220222.jpg" alt="Logo" width="40" height="40" class="me-2">
+                    My Portfolio
+                </a>
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
+                    aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="collapse navbar-collapse" id="navbarNav">
+                    <ul class="navbar-nav ms-auto">
+                        <li class="nav-item">
+                            <a class="nav-link" href="#home">Home</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="#about">About</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="#projects">Projects</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="#contact">Contact</a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </nav>
+    </header>
+
+    <!-- Main Content -->
+    <main>
+        <!-- Home Section - Carousel -->
+        <section id="home">
+            <div id="heroCarousel" class="carousel slide" data-bs-ride="carousel">
+                <!-- Indicators -->
+                <div class="carousel-indicators">
+                    <button type="button" data-bs-target="#heroCarousel" data-bs-slide-to="0" class="active"
+                        aria-current="true" aria-label="Slide 1"></button>
+                    <button type="button" data-bs-target="#heroCarousel" data-bs-slide-to="1"
+                        aria-label="Slide 2"></button>
+                    <button type="button" data-bs-target="#heroCarousel" data-bs-slide-to="2"
+                        aria-label="Slide 3"></button>
+                </div>
+
+                <!-- Carousel Items -->
+                <div class="carousel-inner">
+                    <div class="carousel-item active">
+                        <img src="https://images.unsplash.com/photo-1498050108023-c5249f4df085?ixlib=rb-4.0.3&auto=format&fit=crop&w=1200&h=600"
+                            class="d-block w-100" alt="Web Development">
+                        <div class="carousel-caption d-none d-md-block">
+                            <h5 class="display-6 fw-bold">Web Development</h5>
+                            <p class="lead">สร้างเว็บไซต์ที่สวยงามและใช้งานได้จริง</p>
+                        </div>
+                    </div>
+                    <div class="carousel-item">
+                        <img src="https://images.unsplash.com/photo-1555949963-aa79dcee981c?ixlib=rb-4.0.3&auto=format&fit=crop&w=1200&h=600"
+                            class="d-block w-100" alt="Mobile App">
+                        <div class="carousel-caption d-none d-md-block">
+                            <h5 class="display-6 fw-bold">Mobile App Development</h5>
+                            <p class="lead">พัฒนาแอปพลิเคชันมือถือที่ตอบโจทย์ผู้ใช้</p>
+                        </div>
+                    </div>
+                    <div class="carousel-item">
+                        <img src="https://images.unsplash.com/photo-1551650975-87deedd944c3?ixlib=rb-4.0.3&auto=format&fit=crop&w=1200&h=600"
+                            class="d-block w-100" alt="UI/UX Design">
+                        <div class="carousel-caption d-none d-md-block">
+                            <h5 class="display-6 fw-bold">UI/UX Design</h5>
+                            <p class="lead">ออกแบบประสบการณ์ผู้ใช้ที่น่าประทับใจ</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Controls -->
+                <button class="carousel-control-prev" type="button" data-bs-target="#heroCarousel" data-bs-slide="prev">
+                    <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                    <span class="visually-hidden">Previous</span>
+                </button>
+                <button class="carousel-control-next" type="button" data-bs-target="#heroCarousel" data-bs-slide="next">
+                    <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                    <span class="visually-hidden">Next</span>
+                </button>
+            </div>
+        </section>
+
+        <!-- About Section with Profile Upload -->
+        <section id="about" class="section-padding bg-primary-light">
+            <div class="container">
+                <div class="row">
+                    <div class="col-12 text-center mb-5">
+                        <h2 class="display-4 fw-bold text-gradient mb-4">เกี่ยวกับฉัน</h2>
+                        <p class="lead text-muted">นักพัฒนาเว็บไซต์ที่มีความหลงใหลในการกินไก่ทอดกับข้าวเหนียวทุกวัน</p>
+                    </div>
+                </div>
+
+                <div class="row justify-content-center">
+                    <div class="col-lg-8 text-center">
+                        <!-- Profile Image Upload -->
+                        <div class="profile-upload">
+                            <div class="profile-image-container">
+                                <img id="profileImg" src="img/68319080015.jpg" alt="Profile" class="profile-image">
+                                <div class="upload-overlay" onclick="document.getElementById('profileUpload').click()">
+                                    <i class="fas fa-camera"></i>
+                                </div>
+                                <input type="file" id="profileUpload" accept="image/*">
+                            </div>
+                            <h3 class="h2 fw-bold text-primary mb-3">ณัฐพงษ์ ร่มโพธิ์ภักดิ์</h3>
+                            <p class="lead text-muted mb-4">Developer & UI/UX Designer</p>
+                        </div>
+
+                        <div class="row mt-5">
+                            <div class="col-md-4 mb-4">
+                                <div class="card text-center py-4">
+                                    <div class="card-body">
+                                        <i class="fas fa-code text-primary mb-3" style="font-size: 2.5rem;"></i>
+                                        <h5 class="card-title">10</h5>
+                                        <p class="card-text text-muted">Projects Completed</p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-4 mb-4">
+                                <div class="card text-center py-4">
+                                    <div class="card-body">
+                                        <i class="fas fa-users text-primary mb-3" style="font-size: 2.5rem;"></i>
+                                        <h5 class="card-title">10+</h5>
+                                        <p class="card-text text-muted">Happy Clients</p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-4 mb-4">
+                                <div class="card text-center py-4">
+                                    <div class="card-body">
+                                        <i class="fas fa-award text-primary mb-3" style="font-size: 2.5rem;"></i>
+                                        <h5 class="card-title">3+</h5>
+                                        <p class="card-text text-muted">Years Experience</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Projects Section -->
+        <section id="projects" class="section-padding">
+            <div class="container">
+                <div class="row">
+                    <div class="col-12 text-center mb-5">
+                        <h2 class="display-4 fw-bold text-gradient">ผลงานของฉัน</h2>
+                        <p class="lead text-muted">รวมผลงานที่น่าภาคภูมิใจที่สุด</p>
+                    </div>
+                </div>
+
+                <div class="row g-4">
+                    <!-- Project 1 -->
+                    <div class="col-lg-4 col-md-6 col-sm-12">
+                        <div class="card h-100 fade-in">
+                            <img src="/img/1.jpg" class="card-img-top" alt="Makao888">
+                            <div class="card-body d-flex flex-column">
+                                <h5 class="card-title">Makao888</h5>
+                                <p class="card-text flex-grow-1">เว็บพนัน</p>
+                                <div class="d-flex gap-2">
+                                    <a href="https://www.thairath.co.th/tags/%E0%B8%A1%E0%B8%B2%E0%B9%80%E0%B8%81%E0%B9%8A%E0%B8%B2%20888"
+                                        target="_blank" class="btn btn-primary flex-grow-1">
+                                        <i class="fas fa-external-link-alt me-2"></i>ดูโปรเจกต์
+                                    </a>
+                                    <a href="https://github.com/example/project1" target="_blank"
+                                        class="btn btn-outline-primary">
+                                        <i class="fab fa-github"></i>
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Project 2 -->
+                    <div class="col-lg-4 col-md-6 col-sm-12">
+                        <div class="card h-100 fade-in">
+                            <img src="img/2.jpg" class="card-img-top" alt="Roblox">
+                            <div class="card-body d-flex flex-column">
+                                <h5 class="card-title">Roblox</h5>
+                                <p class="card-text flex-grow-1">พัฒนาเกมRoblox</p>
+                                <div class="d-flex gap-2">
+                                    <a href="https://www.roblox.com/" target="_blank"
+                                        class="btn btn-primary flex-grow-1">
+                                        <i class="fas fa-external-link-alt me-2"></i>ดูโปรเจกต์
+                                    </a>
+                                    <a href="https://github.com/www.roblox.com/project2" target="_blank"
+                                        class="btn btn-outline-primary">
+                                        <i class="fab fa-github"></i>
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Project 3 -->
+                    <div class="col-lg-4 col-md-6 col-sm-12">
+                        <div class="card h-100 fade-in">
+                            <img src="img/3.jpg" class="card-img-top" alt="Restaurant Website">
+                            <div class="card-body d-flex flex-column">
+                                <h5 class="card-title">CISCO</h5>
+                                <p class="card-text flex-grow-1">พัฒนาดูแลระบบเครือข่ายcisco</p>
+                                <div class="d-flex gap-2">
+                                    <a href="https://www.cisco.com/c/en/us/products/conferencing/webex.html"
+                                        target="_blank" class="btn btn-primary flex-grow-1">
+                                        <i class="fas fa-external-link-alt me-2"></i>ดูโปรเจกต์
+                                    </a>
+                                    <a href="https://github.com/www.cisco.com/c/en/us/products/conferencing/webex.html"
+                                        target="_blank" class="btn btn-outline-primary">
+                                        <i class="fab fa-github"></i>
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Project 4 -->
+                    <div class="col-lg-4 col-md-6 col-sm-12">
+                        <div class="card h-100 fade-in">
+                            <img src="https://images.unsplash.com/photo-1553877522-43269d4ea984?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&h=250"
+                                class="card-img-top" alt="Learning Platform">
+                            <div class="card-body d-flex flex-column">
+                                <h5 class="card-title">Learning Platform</h5>
+                                <p class="card-text flex-grow-1">แพลตฟอร์มการเรียนรู้ออนไลน์ที่มีระบบจัดการคอร์ส
+                                    วิดีโอบทเรียน และระบบทดสอบความรู้</p>
+                                <div class="d-flex gap-2">
+                                    <a href="https://example.com/project4" target="_blank"
+                                        class="btn btn-primary flex-grow-1">
+                                        <i class="fas fa-external-link-alt me-2"></i>ดูโปรเจกต์
+                                    </a>
+                                    <a href="https://github.com/example/project4" target="_blank"
+                                        class="btn btn-outline-primary">
+                                        <i class="fab fa-github"></i>
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Project 5 -->
+                    <div class="col-lg-4 col-md-6 col-sm-12">
+                        <div class="card h-100 fade-in">
+                            <img src="https://images.unsplash.com/photo-1551434678-e076c223a692?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&h=250"
+                                class="card-img-top" alt="Portfolio Website">
+                            <div class="card-body d-flex flex-column">
+                                <h5 class="card-title">Portfolio Website</h5>
+                                <p class="card-text flex-grow-1">เว็บไซต์แสดงผลงานส่วนตัวที่ออกแบบให้ดูทันสมัย โดดเด่น
+                                    และใช้งานง่ายบนทุกอุปกรณ์</p>
+                                <div class="d-flex gap-2">
+                                    <a href="https://example.com/project5" target="_blank"
+                                        class="btn btn-primary flex-grow-1">
+                                        <i class="fas fa-external-link-alt me-2"></i>ดูโปรเจกต์
+                                    </a>
+                                    <a href="https://github.com/example/project5" target="_blank"
+                                        class="btn btn-outline-primary">
+                                        <i class="fab fa-github"></i>
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Project 6 -->
+                    <div class="col-lg-4 col-md-6 col-sm-12">
+                        <div class="card h-100 fade-in">
+                            <img src="https://images.unsplash.com/photo-1559028012-481c04fa702d?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&h=250"
+                                class="card-img-top" alt="Mobile Banking App">
+                            <div class="card-body d-flex flex-column">
+                                <h5 class="card-title">Mobile Banking App</h5>
+                                <p class="card-text flex-grow-1">แอpพลิเคชันธนาคารบนมือถือที่มีระบบความปลอดภัยสูง
+                                    พร้อมฟีเจอร์การทำธุรกรรมที่หลากหลาย</p>
+                                <div class="d-flex gap-2">
+                                    <a href="https://example.com/project6" target="_blank"
+                                        class="btn btn-primary flex-grow-1">
+                                        <i class="fas fa-external-link-alt me-2"></i>ดูโปรเจกต์
+                                    </a>
+                                    <a href="https://github.com/example/project6" target="_blank"
+                                        class="btn btn-outline-primary">
+                                        <i class="fab fa-github"></i>
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Contact Section -->
+        <section id="contact" class="section-padding bg-primary-light">
+            <div class="container">
+                <div class="row">
+                    <div class="col-12 text-center mb-5">
+                        <h2 class="display-4 fw-bold text-gradient">ติดต่อเรา</h2>
+                        <p class="lead text-muted">มีโปรเจกต์น่าสนใจ? มาคุยกันเลย!</p>
+                    </div>
+                </div>
+
+                <div class="row justify-content-center">
+                    <div class="col-lg-8">
+                        <div class="card p-4">
+                            <form>
+                                <div class="row">
+                                    <!-- First Name and Last Name Row -->
+                                    <div class="col-md-6">
+                                        <div class="mb-3">
+                                            <label for="firstName" class="form-label">
+                                                <i class="fas fa-user me-2 text-primary"></i>ชื่อ
+                                            </label>
+                                            <input type="text" class="form-control" id="firstName" required>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="mb-3">
+                                            <label for="lastName" class="form-label">
+                                                <i class="fas fa-user me-2 text-primary"></i>นามสกุล
+                                            </label>
+                                            <input type="text" class="form-control" id="lastName" required>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- Email Row -->
+                                <div class="row">
+                                    <div class="col-12">
+                                        <div class="mb-3">
+                                            <label for="email" class="form-label">
+                                                <i class="fas fa-envelope me-2 text-primary"></i>อีเมล
+                                            </label>
+                                            <input type="email" class="form-control" id="email" required>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- Message Row -->
+                                <div class="row">
+                                    <div class="col-12">
+                                        <div class="mb-3">
+                                            <label for="message" class="form-label">
+                                                <i class="fas fa-comment me-2 text-primary"></i>ข้อความ
+                                            </label>
+                                            <textarea class="form-control" id="message" rows="5" required></textarea>
+                                        </div>
+                                    </div>
+                                </div>
+                        </div>
+
+                        <!-- Submit Button -->
+                        <div class="row">
+                            <div class="col-12 text-center">
+                                <button type="submit" class="btn btn-primary">
+                                    <i class="fas fa-paper-plane me-2"></i>ส่งข้อความ
+                                </button>
+                            </div>
+                        </div>
+                        <!-- Social Links -->
+                        <div class="row mt-4">
+                            <div class="col-12 d-flex flex-wrap justify-content-center gap-3">
+                                <a href="https://www.instagram.com/username" target="_blank"
+                                    class="text-primary d-flex align-items-center fs-6">
+                                    <i class="fab fa-instagram me-1"></i>nuttxphong_06
+                                </a>
+                                <a href="mailto:68319080015@tatc.ac.th"
+                                    class="text-primary d-flex align-items-center fs-6">
+                                    <i class="fas fa-envelope me-1"></i>68319080015@tatc.ac.th
+                                </a>
+                                <a href="https://line.me/R/ti/p/@username" target="_blank"
+                                    class="text-primary d-flex align-items-center fs-6">
+                                    <i class="fab fa-line me-1"></i>wave809
+                                </a>
+                                <a href="https://www.facebook.com/username" target="_blank"
+                                    class="text-primary d-flex align-items-center fs-6">
+                                    <i class="fab fa-facebook me-1"></i>Nuttaphong Romphophak
+                                </a>
+                                <a href="tel:+66882625979" class="text-primary d-flex align-items-center fs-6">
+                                    <i class="fas fa-phone me-1"></i>0882625979
+                                </a>
+                            </div>
+                        </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Footer -->
+    <footer class="py-4 text-center">
+        <div class="container">
+            <p class="mb-0">© 2025 My Portfolio |Nuttaphong Romphophak</p>
+        </div>
+    </footer>
+
+    <!-- Bootstrap JS CDN -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <!-- Script for profile image upload -->
+    <script>
+        document.getElementById('profileUpload').addEventListener('change', function (event) {
+            const file = event.target.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = function (e) {
+                    document.getElementById('profileImg').src = e.target.result;
+                }
+                reader.readAsDataURL(file);
+            }
+        });
+    </script>
+</body>
+
+</html>
